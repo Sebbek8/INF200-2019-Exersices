@@ -13,7 +13,7 @@ def median(data):
 
     Source:
     https://github.com/yngvem/INF200-2019-Exercises/blob/master/exersices/
-    ex03.rst
+    ex03_project.rst
     """
 
     sdata = sorted(data)
