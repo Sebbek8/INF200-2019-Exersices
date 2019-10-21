@@ -35,4 +35,11 @@ class Walker:
         return self.steps
 
 if __name__ == "__main__":
-    while not self.position == self.home:
+    w1list = []
+    for _ in range(5):
+        w1 = Walker(0, 1)
+        while not w1.position == w1.home:
+            w1.move()
+        w1list.append(w1.get_steps())
+    print(w1list)
+
