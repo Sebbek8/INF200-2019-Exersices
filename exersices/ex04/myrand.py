@@ -29,3 +29,15 @@ class ListRand:
         if self.counter > len(self.numbers) - 1:
             raise RuntimeError
         return self.numbers[self.counter]
+
+
+if __name__ == '__main__':
+    lc = LCGRand(125)
+    print("First random number by LCG: {0}".format(lc.rand()))
+    print("Second random number by LCG: {0}".format(lc.rand()))
+    print("Third random number by LCG: {0}".format(lc.rand()))
+
+    lr = ListRand([2, 7, 19, 3])
+    print("First random number by list of numbers: {0}".format(lr.rand()))
+    print("Second random number by list of numbers: {0}".format(lr.rand()))
+    print("Third random number by list of numbers: {0}".format(lr.rand()))
