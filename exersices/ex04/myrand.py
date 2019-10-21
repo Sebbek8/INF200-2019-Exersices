@@ -17,7 +17,7 @@ class LCGRand:
         m = 2**31 - 1
         self.r[self.counter + 1] = a * self.r[self.counter] % m
         self.counter += 1
-        return self.r
+        return self.r[self.counter]
 
 
 class ListRand:
