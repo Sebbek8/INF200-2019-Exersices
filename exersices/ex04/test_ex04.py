@@ -17,9 +17,6 @@ source: https://github.com/yngvem/INF200-2019-Exercises/blob/master/src/
         YOUR_NAME_ex/ex04/test_ex04.py
 """
 
-__author__ = 'Hans Ekkehard Plesser'
-__email__ = 'hans.ekkehard.plesser@nmbu.no'
-
 
 def test_lcg():
     """Test that LCG generator works."""
