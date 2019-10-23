@@ -53,8 +53,9 @@ if __name__ == "__main__":
         for _ in range(5):
             w = Walker(0, distance)
             """Walk until you are home"""
-            while not w.position == w.home:
+            while not w.is_at_home():
                 w.move()
+            """Add the steps to the temporary list"""
             templist.append(w.get_steps())
         print("Distance:   {0} -> Path lengths: {1}".format(distance,
                                                             templist))
