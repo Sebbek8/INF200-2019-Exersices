@@ -10,7 +10,7 @@ class Walker:
     def __init__(self, startpoint, home):
         self.startpoint = startpoint
         self.home = home
-        """Starts with 0 steps"""
+        # Starts with 0 steps
         self.steps = 0
         self.position = startpoint
 
@@ -20,7 +20,7 @@ class Walker:
         if step == 2:
             step = -1
         self.steps += 1
-        """Counts the total amount of steps"""
+        # Counts the total amount of steps
         self.position += step
         self.is_at_home()
         return self.get_steps()
@@ -43,19 +43,19 @@ class Walker:
 
 if __name__ == "__main__":
 
-    """List of all the distances"""
+    # List of all the distances
     distances = [1, 2, 5, 10, 20, 50, 100]
 
-    """Double for-loop to do each distance 5 times"""
+    # Double for-loop to do each distance 5 times
     for distance in distances:
-        """Defines temporary list that contains the 5 values, and resets"""
+        # Defines temporary list that contains the 5 values, and resets
         templist = []
         for _ in range(5):
             w = Walker(0, distance)
-            """Walk until you are home"""
+            # Walk until you are home
             while not w.is_at_home():
                 w.move()
-            """Add the steps to the temporary list"""
+            # Add the steps to the temporary list
             templist.append(w.get_steps())
         print("Distance:   {0} -> Path lengths: {1}".format(distance,
                                                             templist))

@@ -11,7 +11,8 @@ class LCGRand:
         self.r = [seed]
 
     def rand(self):
-        """Adds element to the list, so that the list always is long enough"""
+        """Adds element to the list, so that the list always is long enough
+        and calculated the LCG"""
         self.r.append("placeholder value")
         a = 7**5
         m = 2**31 - 1
