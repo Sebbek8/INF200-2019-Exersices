@@ -95,7 +95,6 @@ class RandIter:
         return self.generator.rand()
 
 
-"""
 random_number_generator = LCGRand(1)
 for rand in random_number_generator.random_sequence(10):
     print(rand)
@@ -103,6 +102,5 @@ for rand in random_number_generator.random_sequence(10):
 i = 0
 while i < 100:
     rand = random_number_generator.infinite_random_sequence()
-    print(f'The {i}-th random number is {rand}')
+    print(f'The {i}-th random number is {next(rand)}')
     i += 1
-"""
