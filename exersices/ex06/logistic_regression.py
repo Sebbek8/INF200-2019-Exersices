@@ -121,11 +121,6 @@ Code
 ----
 """
 
-
-__author__ = "Yngve Mardal Moe"
-__email__ = "yngve.m.moe@gmail.com"
-
-
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.exceptions import NotFittedError
@@ -172,8 +167,8 @@ def predict_proba(coef, X):
     p : np.ndarray(shape(n,))
         The predicted class probabilities.
     """
-    # Your code here
-    pass
+    y_hat = X@coef
+    return sigmoid(y_hat)
 
 
 def logistic_gradient(coef, X, y):
@@ -202,8 +197,12 @@ def logistic_gradient(coef, X, y):
         The gradient of the cross entropy loss related to the linear
         logistic regression model.
     """
-    # Your code here
-    pass
+    new_array = np.zeros(X.shape[1])
+    yi_hat = predict_proba(coef, X)
+    d_y = y - yi_hat
+    for i in range(X.shape[1]):
+        new_array[i] += X[:, i]@d_y
+    return new_array
 
 
 class LogisticRegression(BaseEstimator, ClassifierMixin):
@@ -256,8 +255,10 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         random_state : np.random.random_state or int or None (default=None)
             A numpy random state object or a seed for a numpy random state object.
         """
-        # Your code here
-        pass
+        self.max_iter = max_iter
+        self.tol = tol
+        self.learning_rate = learning_rate
+        self.random_state = random_state
 
     def _has_converged(self, coef, X, y):
         r"""Whether the gradient descent algorithm has converged.
@@ -282,8 +283,11 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         has_converged : bool
             True if the convergence criteria above is met, False otherwise.
         """
-        # Your code here
-        pass
+        if np.linalg.norm(logistic_gradient(coef, X, y)) < self.tol:
+            return True
+        else:
+            return False
+
 
     def _fit_gradient_descent(self, coef, X, y):
         r"""Fit the logisitc regression model to the data given initial weights
@@ -313,8 +317,23 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         coef : np.ndarray(shape=(n,))
             The logistic regression weights
         """
-        # Your code here
-        pass
+
+        """
+        for k in range(self.max_iter):
+            coef[k] = coef[k-1] -self.learning_rate *\
+                      logistic_gradient(coef[k-1], X, y)
+
+        return coef
+        """
+
+        counter = 0
+        while True:
+            coef -= self.learning_rate * logistic_gradient(coef, X, y)
+
+            if counter >= self.max_iter:
+                return coef
+
+            counter += 1
 
     def fit(self, X, y):
         """Fit a logistic regression model to the data.
