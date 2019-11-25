@@ -25,7 +25,8 @@ implement the following five functions:
   * ``sigmoid(z)``
   * ``predict_proba(w, X)``
   * ``logistic_gradient(w, X, y)``
-  * ``LogisticRegression.__init__(self, max_iter=1000, tol=1e-5, learning_rate=0.01, random_state=None)``
+  * ``LogisticRegression.__init__(self, max_iter=1000, tol=1e-5, learning_rate=
+  0.01, random_state=None)``
   * ``LogisticRegression._fit_gradient_descent(self, coef, X, y)``
   * ``LogisticRegression._has_converged(self, coef, X, y)``
 Read the docstring of these functions to understand how you should create
@@ -80,10 +81,12 @@ find a set of regression coefficients that minimises this cost.
 If you are good at statistics, you might realise that a good cost function
 for this problem is one on the following form:
 .. math::
-    C(\mathbf{w}; \mathbf{X}, \mathbf{y}) = -\sum_i y_i log(p(\mathbf{x}_i; \mathbf{w})) + (1-y_i) log(1 - p(\mathbf{x}_i; \mathbf{w})),
+    C(\mathbf{w}; \mathbf{X}, \mathbf{y}) = -\sum_i y_i log(p(\mathbf{x}_i; 
+    \mathbf{w})) + (1-y_i) log(1 - p(\mathbf{x}_i; \mathbf{w})),
 which, with the notation above, becomes
 .. math::
-    C(\mathbf{w}; \mathbf{X}, \mathbf{y}) = -\sum_i y_i log(\hat{y}_i) + (1 - y_i) log(1 - \hat{y}_i).
+    C(\mathbf{w}; \mathbf{X}, \mathbf{y}) = -\sum_i y_i log(\hat{y}_i) + 
+    (1 - y_i) log(1 - \hat{y}_i).
 Finding the best model:
 ~~~~~~~~~~~~~~~~~~~~~~~
 Now, we wish to find the :math:`\mathbf{w}` that minimise the cost function
@@ -98,7 +101,8 @@ is the "direction" in which the cost function changes the most rapidly. Thus,
 if we want to make the small change in :math:`\mathbf{w}` that has the maximum
 effect on the value of :math:`C`, then we update it the following way
 .. math::
-    \mathbf{w}^{\text{new}} = w - \eta \nabla_w C(\mathbf{w}; \mathbf{X}, \mathbf{y}),
+    \mathbf{w}^{\text{new}} = w - \eta \nabla_w C(\mathbf{w}; \mathbf{X}, 
+    \mathbf{y}),
 where :math:`\mathbf{w}^{\text{new}}` is the new guess for a good set of 
 regression coefficients and :math:`\eta` is a parameter that specifies how 
 large the change in :math:`w` can be.
@@ -107,7 +111,8 @@ other words, to compute the gradient of the cost function. Luckily, this is
 not too complicated in the case of logistic regression. Here, the gradient
 is given by
 .. math::
-    \nabla_w C(\mathbf{w}; \mathbf{X}, \mathbf{y}) = \sum_i \mathbf{x}_i (y_i - \hat{y}_i).
+    \nabla_w C(\mathbf{w}; \mathbf{X}, \mathbf{y}) = \sum_i \mathbf{x}_i 
+    (y_i - \hat{y}_i).
 Final note
 ----------
 You may wonder why some of the methods start with a single leading underscore.
@@ -145,7 +150,6 @@ def sigmoid(z):
     return 1/(1 + np.exp(-z))
 
 
-
 def predict_proba(coef, X):
     r"""Predict the class probabilities for each data point in :math:`X`.
     Estimate which class each data point in X corresponds to. This is done
@@ -175,11 +179,13 @@ def logistic_gradient(coef, X, y):
     r"""Returns the gradient of a logistic regression model.
     The gradient is given by
     .. math::
-        \nabla_w L(\mathbf{w}; X, \mathbf{y}) = \sum_i \mathbf{x}_i (y_i - \hat{y}_i),
+        \nabla_w L(\mathbf{w}; X, \mathbf{y}) = \sum_i \mathbf{x}_i (y_i -
+        \hat{y}_i),
     or, elementwise,
     .. math::
-        \left[\nabla_w L(\mathbf{w}; X, \mathbf{y})\right]_j = \frac{\partial L}{\partial w_j}
-                                                             = \sum_i X_{ij} (y_i - \hat{y}_i),
+        \left[\nabla_w L(\mathbf{w}; X, \mathbf{y})\right]_j =
+        \frac{\partial L}{\partial w_j}
+        = \sum_i X_{ij} (y_i - \hat{y}_i),
     where :math:`\hat{y}_i` is the predicted value for data point
     :math:`i` and is given by :math:`\sigma(x_i^Tw)`, where
     :math:`\sigma(z)` is the sigmoidal function.
@@ -197,13 +203,17 @@ def logistic_gradient(coef, X, y):
         The gradient of the cross entropy loss related to the linear
         logistic regression model.
     """
+    """
     new_array = np.zeros(X.shape[1])
     yi_hat = predict_proba(coef, X)
     d_y = y - yi_hat
     for i in range(X.shape[1]):
         new_array[i] += X[:, i]@d_y
     return new_array
-
+    """
+    residual = y - predict_proba(coef, X)
+    return -np.sum(X*residual[:, np.newaxis], axis=0)
+    return (y - predict_proba(coef, X))@X
 
 class LogisticRegression(BaseEstimator, ClassifierMixin):
     """A logistic regression classifier that follows the scikit-learn API.
@@ -253,7 +263,8 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         learning_rate : float (default=0.01)
             The step-size for the gradient descent updates.
         random_state : np.random.random_state or int or None (default=None)
-            A numpy random state object or a seed for a numpy random state object.
+            A numpy random state object or a seed for a numpy random state
+            object.
         """
         self.max_iter = max_iter
         self.tol = tol
@@ -283,18 +294,15 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         has_converged : bool
             True if the convergence criteria above is met, False otherwise.
         """
-        if np.linalg.norm(logistic_gradient(coef, X, y)) < self.tol:
-            return True
-        else:
-            return False
-
+        return np.linalg.norm(logistic_gradient(coef, X, y)) < self.tol
 
     def _fit_gradient_descent(self, coef, X, y):
         r"""Fit the logisitc regression model to the data given initial weights
         Gradient descent works by iteratively applying the following update
         rule
         .. math::
-            \mathbf{w}^{(k)} \gets \mathbf{w}^{(k-1)} - \eta \nabla L(\mathbf{w}^{(k-1)}; X, \mathbf{y}),
+            \mathbf{w}^{(k)} \gets \mathbf{w}^{(k-1)} - \eta \nabla
+             L(\mathbf{w}^{(k-1)}; X, \mathbf{y}),
         where :math:`\mathbf{w}^{(k)}` is the coefficient vector at iteration
         ``k``, :math:`\mathbf{w}^{(k-1)}` is the coefficient vector at
         iteration k-1, :math:`\eta` is the learning rate and
@@ -317,22 +325,11 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         coef : np.ndarray(shape=(n,))
             The logistic regression weights
         """
-
-        """
-        for k in range(self.max_iter):
-            coef[k] = coef[k-1] -self.learning_rate *\
-                      logistic_gradient(coef[k-1], X, y)
-
-        return coef
-        """
-
         counter = 0
         while True:
             coef -= self.learning_rate * logistic_gradient(coef, X, y)
-
-            if counter >= self.max_iter:
+            if counter >= self.max_iter or self._has_converged(coef, X, y):
                 return coef
-
             counter += 1
 
     def fit(self, X, y):
@@ -416,13 +413,15 @@ if __name__ == "__main__":
     coef = np.random.standard_normal(5)
     y = predict_proba(coef, X) > 0.5
 
+    lr_model = LogisticRegression()
     # Fit a logistic regression model to the X and y vector
-    # Fill in your code here.
+    lr_model.fit(X, y)
+    print(lr_model._has_converged(coef, X, y))
+
     # Create a logistic regression object and fit it to the dataset
+    logistic_gradient(coef, X, y)
 
     # Print performance information
     print(f"Accuracy: {lr_model.score(X, y)}")
     print(f"True coefficients: {coef}")
     print(f"Learned coefficients: {lr_model.coef_}")
-
-
