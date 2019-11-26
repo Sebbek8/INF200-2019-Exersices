@@ -213,7 +213,7 @@ def logistic_gradient(coef, X, y):
     """
     residual = y - predict_proba(coef, X)
     return -np.sum(X*residual[:, np.newaxis], axis=0)
-    return (y - predict_proba(coef, X))@X
+
 
 class LogisticRegression(BaseEstimator, ClassifierMixin):
     """A logistic regression classifier that follows the scikit-learn API.
@@ -416,7 +416,6 @@ if __name__ == "__main__":
     lr_model = LogisticRegression()
     # Fit a logistic regression model to the X and y vector
     lr_model.fit(X, y)
-    print(lr_model._has_converged(coef, X, y))
 
     # Create a logistic regression object and fit it to the dataset
     logistic_gradient(coef, X, y)
